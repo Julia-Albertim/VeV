@@ -45,9 +45,8 @@ pytest
 
 O `pytest` irá executar todos os testes definidos em `test_auth.py`. Você deve ver uma saída indicando que todos os testes passaram.
 
-**Observação Importante:** O teste `test_user_system_registrar_user_email_duplicado_falha_logica` **passa**, mas ele foi escrito especificamente para **demonstrar a falha de lógica (F2)** identificada no Relatório de V&V, onde o sistema **permite** o cadastro de e-mails duplicados. Em um sistema corrigido, este teste deveria ser ajustado para esperar uma exceção (`pytest.raises(ValueError)`).
 
-## 5. Execução da Interface (Opcional)
+## 5. Execução da Interface 
 
 Para rodar a interface de linha de comando do sistema:
 

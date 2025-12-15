@@ -39,32 +39,34 @@ def user_system():
 
 def test_user_system_registrar_user_sucesso(user_system):
     """Testa o registro bem-sucedido de um novo usuário."""
-    user = user_system.registrar_user("Alice", "alice@teste.com", "SenhaForte1")
-    assert user.name == "Alice"
+    user = user_system.registrar_user("Julia", "julia@teste.com", "Senha123")
+    assert user.name == "Julia"
     assert user_system.total_users() == 1
 
 def test_user_system_registrar_user_email_invalido(user_system):
     """Testa a falha de registro com e-mail inválido."""
     with pytest.raises(ValueError) as excinfo:
-        user_system.registrar_user("Bob", "bob_invalido", "SenhaForte1")
+        user_system.registrar_user("jarbas", "jarbas_invalido", "Senha123")
     assert "E-mail inválido" in str(excinfo.value)
     assert user_system.total_users() == 0
+    
+    
 
 def test_user_system_registrar_user_senha_fraca(user_system):
     """Testa a falha de registro com senha fraca."""
     with pytest.raises(ValueError) as excinfo:
-        user_system.registrar_user("Charlie", "charlie@teste.com", "fraca")
+        user_system.registrar_user("Ana", "ana@teste.com", "fraca")
     assert "Senha fraca" in str(excinfo.value)
     assert user_system.total_users() == 0
 
 def test_user_system_encontrar_user_por_email(user_system):
     """Testa a busca de usuário por e-mail."""
-    user_system.registrar_user("David", "david@teste.com", "SenhaForte1")
+    user_system.registrar_user("Rafa", "rafa@teste.com", "SenhaForte1")
     
     # Encontrar usuário existente
-    found_user = user_system.encontrar_user_por_email("david@teste.com")
+    found_user = user_system.encontrar_user_por_email("rafa@teste.com")
     assert found_user is not None
-    assert found_user.name == "David"
+    assert found_user.name == "Rafa"
     
     # Não encontrar usuário inexistente
     not_found_user = user_system.encontrar_user_por_email("naoexiste@teste.com")
@@ -73,24 +75,21 @@ def test_user_system_encontrar_user_por_email(user_system):
 def test_user_system_total_users(user_system):
     """Testa a contagem total de usuários."""
     assert user_system.total_users() == 0
-    user_system.registrar_user("Eve", "eve@teste.com", "SenhaForte1")
+    user_system.registrar_user("Davi", "davi@teste.com", "SenhaForte1")
     assert user_system.total_users() == 1
-    user_system.registrar_user("Frank", "frank@teste.com", "SenhaForte2")
+    user_system.registrar_user("Jarbas", "jarbas@teste.com", "SenhaForte2")
     assert user_system.total_users() == 2
 
 # Teste de falha de lógica (F2 do relatório V&V): O sistema permite e-mails duplicados
 def test_user_system_registrar_user_email_duplicado_falha_logica(user_system):
-    """
-    Testa a falha de lógica: o sistema atual permite o registro de e-mails duplicados.
-    Este teste passa, mas em um sistema real, deveria falhar (ou seja, levantar uma exceção).
-    """
-    user_system.registrar_user("Grace", "grace@teste.com", "SenhaForte1")
+   
+    user_system.registrar_user("Maria", "maria@teste.com", "SenhaForte1")
     # Tenta registrar o mesmo e-mail novamente
-    user_system.registrar_user("Grace Duplicada", "grace@teste.com", "OutraSenha1")
+    user_system.registrar_user("Maria Duplicada", "maria@teste.com", "OutraSenha1")
     
     # O total de usuários é 2, confirmando a falha de lógica (F2)
     assert user_system.total_users() == 2
     
-    # A busca pelo e-mail retorna o primeiro usuário cadastrado (comportamento não determinístico)
-    found_users = [u for u in user_system.users if u.email == "grace@teste.com"]
+    # A busca pelo e-mail retorna o primeiro usuário cadastrado
+    found_users = [u for u in user_system.users if u.email == "maria@teste.com"]
     assert len(found_users) == 2
